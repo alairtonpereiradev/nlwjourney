@@ -11,12 +11,28 @@ datasource db {
 }
 
 model Trip {
-  id           String   @id @default(uuid())
-  destination  String
-  starts_at    DateTime
-  ends_at      DateTime
-  is_confirmed Boolean  @default(false)
-  created_at   DateTime @default(now())
+  id            String          @id @default(uuid())
+  
+  destination   String
+  starts_at     DateTime
+  ends_at       DateTime
+  is_confirmed  Boolean         @default(false)
+  created_at    DateTime        @default(now())
+  participantes Participante[]
 
   @@map("trips")
+}
+
+model Participante {
+  id           String  @id @default(uuid())
+
+  name         String?
+  email        String
+  is_confirmed Boolean @default(false)
+  is_owner     Boolean @default(false)
+  trip_Id      String
+  
+  trip   Trip   @relation(fields: [trip_Id], references: [id])
+
+  @@map("participantes")
 }
